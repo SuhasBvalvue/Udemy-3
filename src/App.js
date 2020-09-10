@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
+
 import "./App.css";
-import person from "./Person/Person";
 import Person from "./Person/Person";
 
 class App extends Component {
@@ -11,6 +10,7 @@ class App extends Component {
 			{ name: "Dipak", age: 42 },
 			{ name: "Rohan", age: 32 },
 		],
+		showAlert: false,
 	};
 
 	switchHandler = newName => {
@@ -21,6 +21,11 @@ class App extends Component {
 				{ name: "Manish", age: 42 },
 			],
 		});
+	};
+
+	toggleAlertHandler = () => {
+		const doesShow = this.state.showAlert;
+		this.setState({ showAlert: !doesShow });
 	};
 
 	nameChangeHandler = event => {
@@ -34,29 +39,52 @@ class App extends Component {
 	};
 
 	render() {
+		let person = null;
+		if (this.state.showAlert) {
+			person = (
+				<div
+					className="alert alert-warning alert-dismissible fade show"
+					role="alert"
+				>
+					<strong>Holy guacamole!</strong> You should check in on some of
+					those fields below.
+					<span aria-hidden="true">&times;</span>
+				</div>
+			);
+		}
+
 		return (
-			<div className="App" class="alert alert-success">
+			<div className="App" className="alert alert-success">
 				<br></br>
 				<button
-					class="btn btn-info"
+					className="btn btn-info"
 					onClick={this.switchHandler.bind(this, "Min!!")}
 				>
 					Click this!
 				</button>
-				<Person
-					name={this.state.person[0].name}
-					age={this.state.person[0].age}
-				></Person>
-				<Person
-					name={this.state.person[1].name}
-					age={this.state.person[1].age}
-					onClick={this.switchHandler.bind(this, "Max!!")}
-					changed={this.nameChangeHandler}
-				></Person>
-				<Person
-					name={this.state.person[2].name}
-					age={this.state.person[2].age}
-				></Person>
+				<br></br>
+				<br></br>
+				<button className="btn btn-info" onClick={this.toggleAlertHandler}>
+					Show Alert
+				</button>
+
+				<div>
+					<Person
+						name={this.state.person[0].name}
+						age={this.state.person[0].age}
+					></Person>
+					<Person
+						name={this.state.person[1].name}
+						age={this.state.person[1].age}
+						onClick={this.switchHandler.bind(this, "Max!!")}
+						changed={this.nameChangeHandler}
+					></Person>
+					<Person
+						name={this.state.person[2].name}
+						age={this.state.person[2].age}
+					></Person>
+					{person}
+				</div>
 			</div>
 		);
 	}
